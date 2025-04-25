@@ -1,0 +1,5 @@
+fastapi
+passlib
+pyjwt
+supabase
+uvicornz

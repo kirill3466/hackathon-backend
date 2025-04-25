@@ -1,0 +1,23 @@
+from models import Base
+
+
+class ResultCreate(Base):
+    id: int
+    type: str
+    score: float
+    stress_level: str
+    employee_id: int
+
+
+class ResultUpdate(Base):
+    type: str
+    score: float
+    stress_level: str
+    employee_id: int
+
+
+class ResultRead(Base):
+    type: str
+    score: float
+    stress_level: str
+    employee_id: int
