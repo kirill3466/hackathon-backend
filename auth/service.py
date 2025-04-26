@@ -6,7 +6,6 @@ from fastapi.security import (
     OAuth2PasswordBearer,
 )
 
-from db.core import supabase
 from employee.service import get_by_email
 from settings import JWT_ALGO, JWT_SECRET_KEY
 

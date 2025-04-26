@@ -30,3 +30,6 @@ static
 
 # macOS
 .DS_Store
+
+*.json
+*.ts

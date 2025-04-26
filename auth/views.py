@@ -1,13 +1,16 @@
 from datetime import timedelta
 
+import jwt
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse
+from starlette import status
 from starlette.responses import Response
 
 from employee.models import EmployeeCreate, EmployeeRead
 from employee.service import create, get_by_email
+from settings import JWT_SECRET_KEY
 
-from .models import UserLogin
+from .models import TokenFull, UserLogin, UserToken
 from .security import authenticate_user, get_password_hash
 from .service import create_access_token
 
@@ -38,23 +41,48 @@ async def login_for_access_token(user_login: UserLogin):
     }
 
 
-@router.post("/sign-up", response_model=EmployeeRead, status_code=201)
+@router.post("/validate-token", response_model=UserToken)
+async def validate_token(token: TokenFull) -> bool:
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid token format. Expected 'Bearer <token>'"
+        )
+    token = token.access_token.split(' ')[1]
+    payload = jwt.decode(
+        jwt=token,
+        key=JWT_SECRET_KEY,
+        algorithms=["HS256"]
+    )
+    email = payload.get("sub")
+    user_data = get_by_email(email)
+    user_data = EmployeeRead(**dict(user_data))
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user_data": user_data
+    }
+
+
+@router.post("/sign-up", response_model=UserToken, status_code=201)
 async def register_employee(employee_data: EmployeeCreate):
     """
     Регистрация нового сотрудника.
     """
+    user_data = get_by_email(employee_data.email)
+
     employee_data.hashed_password = get_password_hash(
         employee_data.hashed_password
     )
     access_token_expires = timedelta(minutes=30)
-    user = create(employee_data)
     access_token = create_access_token(
-        data={"sub": user["email"]}, expires_delta=access_token_expires
+        data={"sub": employee_data.email}, expires_delta=access_token_expires
     )
+    user_data = create(employee_data)
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user_data": user 
+        "user_data": dict(user_data) 
     }
 
 
