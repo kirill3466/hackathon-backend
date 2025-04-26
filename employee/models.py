@@ -12,6 +12,7 @@ class EmployeeCreate(Base):
     is_active: bool | None = None
     is_ready: bool | None = None
     status: str | None = None
+    role: str | None = None
 
 
 class EmployeeUpdate(Base):
@@ -24,6 +25,7 @@ class EmployeeUpdate(Base):
     is_active: bool | None = None
     is_ready: bool | None = None
     status: str | None = None
+    role: str | None = None
 
 
 class EmployeeRead(Base):
@@ -36,3 +38,4 @@ class EmployeeRead(Base):
     is_active: bool | None = None
     is_ready: bool | None = None
     status: str | None = None
+    role: str | None = None

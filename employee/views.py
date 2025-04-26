@@ -25,12 +25,12 @@ async def get_employee(employee_id: int):
     return employee
 
 
-@router.post("/", response_model=EmployeeRead, status_code=201)
-async def create_employee(employee_data: EmployeeCreate):
-    """
-    Создать нового сотрудника.
-    """
-    return create(employee_data)
+# @router.post("/", response_model=EmployeeRead, status_code=201)
+# async def create_employee(employee_data: EmployeeCreate):
+#     """
+#     Создать нового сотрудника.
+#     """
+#     return create(employee_data)
 
 
 @router.put("/{employee_id}", response_model=EmployeeRead)
