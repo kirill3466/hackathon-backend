@@ -2,16 +2,16 @@ from models import Base
 
 
 class EmployeeCreate(Base):
-    username: str
+    username: str | None = None
     hashed_password: str
-    organization_id: int
+    organization_id: int | None = None
     name: str
     surname: str
     email: str
     phone: str
-    is_active: bool
-    is_ready: bool
-    status: str
+    is_active: bool | None = None
+    is_ready: bool | None = None
+    status: str | None = None
 
 
 class EmployeeUpdate(Base):
@@ -33,6 +33,6 @@ class EmployeeRead(Base):
     surname: str
     email: str
     phone: str
-    is_active: bool
-    is_ready: bool
-    status: str
+    is_active: bool | None = None
+    is_ready: bool | None = None
+    status: str | None = None
