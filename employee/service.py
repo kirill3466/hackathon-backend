@@ -23,6 +23,32 @@ def get_by_id(employee_id: int):
     return EmployeeRead(**response.data[0]) if response.data else None
 
 
+def get_by_username(username: str):
+    """
+    Получить сотрудника по username.
+    """
+    response = (
+        supabase.table("employee")
+        .select("*")
+        .eq("username", username)
+        .execute()
+    )
+    return EmployeeRead(**response.data[0]) if response.data else None
+
+
+def get_by_email(email: str):
+    """
+    Получить сотрудника по email.
+    """
+    response = (
+        supabase.table("employee")
+        .select("*")
+        .eq("email", email)
+        .execute()
+    )
+    return EmployeeRead(**response.data[0]) if response.data else None
+
+
 def create(employee_in: EmployeeCreate):
     """
     Создать нового сотрудника.

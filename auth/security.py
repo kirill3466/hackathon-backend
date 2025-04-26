@@ -13,14 +13,14 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def authenticate_user(username: str, password: str):
+def authenticate_user(email: str, password: str):
     """
     Проверка имени пользователя и пароля через Supabase.
     """
     response = (
         supabase.table("employee")
-        .select("id, username, hashed_password")
-        .eq("username", username)
+        .select("id, email, hashed_password")
+        .eq("email", email)
         .execute()
     )
     user = response.data[0] if response.data else None

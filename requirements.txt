@@ -3,3 +3,4 @@ passlib
 pyjwt
 supabase
 uvicorn
+bcrypt
