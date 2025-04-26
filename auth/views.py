@@ -86,11 +86,11 @@ async def register_employee(employee_data: EmployeeCreate):
     }
 
 
-@router.get("/logout")
-async def logout(response: Response):
-    response = RedirectResponse("/login", status_code=303)
-    response.delete_cookie(key="access_token")
-    return response
+# @router.get("/logout")
+# async def logout(response: Response):
+#     response = RedirectResponse("/login", status_code=303)
+#     response.delete_cookie(key="access_token")
+#     return response
 
 
 # @router.post("/signup")

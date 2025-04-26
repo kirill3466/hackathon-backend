@@ -2,12 +2,12 @@ from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 
 from .models import OrganizationCreate, OrganizationRead, OrganizationUpdate
-from .service import create, delete, get_all, get_by_id, update
+from .service import create, delete, get_all, get_by_id, update, join_org_by_id
 
 router = APIRouter()
 
 
-@router.get("/organizations/", response_model=list[OrganizationRead])
+@router.get("/", response_model=list[OrganizationRead])
 async def list_organizations():
     """
     Получить список всех организаций.
@@ -15,7 +15,18 @@ async def list_organizations():
     return get_all()
 
 
-@router.get("/organizations/{org_id}", response_model=OrganizationRead)
+@router.post("/join/{org_id}")
+async def join_org_employee_to_org(employee_id: int , org_id: int):
+    """
+    Подписываем сотрудника к организации
+    """
+    join_org = join_org_by_id(employee_id, org_id)
+    if not join_org:
+        raise HTTPException(status_code=404, detail="Не удалось вступить в организацию")
+    return join_org
+
+
+@router.get("/{org_id}", response_model=OrganizationRead)
 async def get_organization(org_id: int):
     """
     Получить организацию по её ID.
@@ -27,19 +38,19 @@ async def get_organization(org_id: int):
 
 
 @router.post(
-    "/organizations/",
+    "/",
     response_model=OrganizationRead,
     status_code=201
 )
-async def create_organization_endpoint(org_data: OrganizationCreate):
+async def create_organization(org_data: OrganizationCreate, user_id: int):
     """
     Создать новую организацию.
     """
-    return create(org_data)
+    return create(org_data, user_id)
 
 
-@router.put("/organizations/{org_id}", response_model=OrganizationRead)
-async def update_existing_organization(org_id: int, org: OrganizationUpdate):
+@router.put("/{org_id}", response_model=OrganizationRead)
+async def update_organization(org_id: int, org: OrganizationUpdate):
     """
     Обновить данные организации по её ID.
     """
@@ -49,8 +60,8 @@ async def update_existing_organization(org_id: int, org: OrganizationUpdate):
     return updated_org
 
 
-@router.delete("/organizations/{org_id}", status_code=204)
-async def delete_organization_endpoint(org_id: int):
+@router.delete("/{org_id}", status_code=204)
+async def delete_organization(org_id: int):
     """
     Удалить организацию по её ID.
     """
