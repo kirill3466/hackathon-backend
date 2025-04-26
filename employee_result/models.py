@@ -11,7 +11,7 @@ class ResultCreate(Base):
 class ResultUpdate(Base):
     type: str
     score: float
-    stress_level: str
+    stress_level: str | None = "Normal"
     employee_id: int
 
 
