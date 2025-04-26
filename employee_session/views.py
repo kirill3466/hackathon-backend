@@ -15,7 +15,7 @@ async def list_sessions():
     return get_all()
 
 
-@router.get("/employee/{employee_id}", response_model=list[SessionRead])
+@router.get("/{employee_id}", response_model=list[SessionRead])
 async def list_sessions_by_employee(employee_id: int):
     """
     Получить все сессии для конкретного сотрудника по его ID.
