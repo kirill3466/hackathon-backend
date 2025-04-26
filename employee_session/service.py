@@ -12,6 +12,18 @@ def get_all():
     return [SessionRead(**item) for item in response.data]
 
 
+def get_by_employee_id(employee_id: int):
+    """
+    Получить все сессии для конкретного сотрудника по его ID.
+    """
+    response = (
+        supabase.table("session")
+        .select("*")
+        .eq("employee_id", employee_id)
+        .execute()
+    )
+    return [SessionRead(**item) for item in response.data] if response.data else []
+
 def get_by_id(session_id: int):
     """
     Получить сессию по ID.

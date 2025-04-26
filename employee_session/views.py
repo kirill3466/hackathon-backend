@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 
 from .models import SessionCreate, SessionRead, SessionUpdate
-from .service import create, delete, get_all, get_by_id, update
+from .service import create, delete, get_all, get_by_employee_id, get_by_id, update
 
 router = APIRouter()
 
@@ -13,6 +13,17 @@ async def list_sessions():
     Получить список всех сессий.
     """
     return get_all()
+
+
+@router.get("/employee/{employee_id}", response_model=list[SessionRead])
+async def list_sessions_by_employee(employee_id: int):
+    """
+    Получить все сессии для конкретного сотрудника по его ID.
+    """
+    sessions = get_by_employee_id(employee_id)
+    if not sessions:
+        raise HTTPException(status_code=404, detail="Сессии для этого сотрудника не найдены")
+    return sessions
 
 
 @router.get("/{session_id}", response_model=SessionRead)
