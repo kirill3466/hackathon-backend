@@ -2,7 +2,6 @@ from models import Base
 
 
 class ResultCreate(Base):
-    id: int
     type: str
     score: float
     stress_level: str
@@ -17,6 +16,7 @@ class ResultUpdate(Base):
 
 
 class ResultRead(Base):
+    id: int
     type: str
     score: float
     stress_level: str
